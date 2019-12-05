@@ -32,33 +32,53 @@ struct Queue* CreateQueue()
 void enQueue(struct Queue *q,int k)
 {
     struct QNode *temp=new_node(k);
-    if(q->rear==NULL)
+    if(q->rear)
+    {
+        q->rear->next=temp;
+        q->rear=temp;
+        //printf("enqueued");
+    }
+    if(!q->front)
     {
         q->front=q->rear=temp;
-        return;
     }
-    q->rear->next=temp;
-    q->rear=temp;
 }
 
 
 
 int deQueue(struct Queue *q)
 {
+    int temp2;
     if(q->front==NULL)
     {
-    return 0;
+        return 0;
     }
     struct QNode *temp = q->front;
     //free(temp);
     q->front=q->front->next;
-    int temp2=temp->key;
+    temp2=temp->key;
     free(temp);
     if(q->front==NULL)
     {
         q->rear=NULL;
     }
     return temp2;
+}
+
+void print(struct Queue *q)
+{
+    struct QNode *temp=q->front;
+    //struct Queue *temp2=q;
+    //printf("hello");
+    //struct QNode *temp2;
+    while(temp)
+    {
+        //temp2=temp->front;
+        printf("%d ",temp->key);
+        temp=temp->next;
+    }
+    printf("\n");
+    //q->front=temp2->front;
 }
 
 int main()
@@ -70,5 +90,6 @@ int main()
     {
         enQueue(q,a[i]);
     }
+    print(q);
     printf("%d",deQueue(q));
 }
